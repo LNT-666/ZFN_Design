@@ -1,7 +1,7 @@
 # ZFN WebSuite — reproducible build
 #
-#   docker build -t zfn-websuite:0.7.0 .
-#   docker run --rm -p 8797:8797 -v "$PWD/out:/out" zfn-websuite:0.7.0
+#   docker build -t zfn-websuite:0.8.0 .
+#   docker run --rm -p 8797:8797 -v "$PWD/out:/out" zfn-websuite:0.8.0
 #
 # The image is deliberately small: the package itself is standard-library only.
 # numpy and pyahocorasick are installed because they speed the whole-genome
@@ -13,7 +13,7 @@ FROM python:3.12-slim
 LABEL org.opencontainers.image.title="ZFN WebSuite" \
       org.opencontainers.image.description="Repeat-aware, genome-scale ZFN design with order-ready CDS" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.version="0.7.0"
+      org.opencontainers.image.version="0.8.0"
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
