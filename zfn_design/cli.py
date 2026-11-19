@@ -433,7 +433,23 @@ def build_parser() -> argparse.ArgumentParser:
     return ap
 
 
+def _utf8_stdio() -> None:
+    """Force UTF-8 on stdout/stderr.
+
+    Labels below contain non-ASCII characters. On a Windows console that
+    defaults to a legacy code page, a redirected stdout raises
+    UnicodeEncodeError and the process exits 1 -- which is how the Windows
+    CI runner failed the CLI self-check.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv: list[str] | None = None) -> int:
+    _utf8_stdio()
     ap = build_parser()
     args = ap.parse_args(argv)
     try:
