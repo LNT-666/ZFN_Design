@@ -13,7 +13,7 @@ FROM python:3.12-slim
 LABEL org.opencontainers.image.title="ZFN WebSuite" \
       org.opencontainers.image.description="Repeat-aware, genome-scale ZFN design with order-ready CDS" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.version="0.8.0"
+      org.opencontainers.image.version="0.8.1"
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \

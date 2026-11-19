@@ -45,7 +45,9 @@ python -m pip install -e .        # 或直接 python -m zfn_design ...
 bash packaging/install.sh
 
 # 3) conda
-conda env create -f packaging/environment.yml && conda activate zfn
+conda env create -f packaging/environment.yml
+conda activate zfn-websuite
+python -m pip install -e .        # 环境里不含本包，装完才能用 zfn-design 命令
 
 # 4) Docker
 docker build -f packaging/Dockerfile -t zfn-websuite .
@@ -102,7 +104,7 @@ GUI 三步：贴序列（或用示例）→ 点 **Design Score**（S1，可选�
 python -m pytest -q
 ```
 
-仓库版没有完整指头库时，依赖 64/64 覆盖的用例会自动 skip（`ZFN_LIBRARY_FULL=1` 可强制要求全库）。
+仓库版没有完整指头库时，依赖 64/64 覆盖的用例会自动 skip（装好完整库后这些用例会自动开始跑）。
 
 ## 许可与引用
 

@@ -44,7 +44,8 @@ _weights=7。
   `zfn-design info` 里明示。新增 `LICENSE`（MIT）、`CITATION.cff`、根级 `.gitignore`。
 - **可复现包**：`packaging/Dockerfile`、`packaging/environment.yml`、`packaging/install.sh`
   （venv 失败自动回退 `pip --target`）、`packaging/smoke_test.py`（S1→S4 端到端冒烟）。
-- **测试**：166 项（含 S2/S3/S4 与门禁用例）；没有完整指头库时 5 项依赖库的集成用例自动 skip。
+- **测试**：166 项（含 S2/S3/S4 与门禁用例），实测 158 passed / 8 skipped；没有完整 B1H 指头库时
+  这 8 项依赖全库覆盖的集成用例自动 skip。
   同时修掉旧套件里 8 项口径过期的断言（组件数 8→7、`n_sites` 语义、脱靶不再进设计分等）。
 
 ## 0.7.0 — 2026-11-15

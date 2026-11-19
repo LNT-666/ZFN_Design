@@ -22,7 +22,7 @@ zfn-design = "zfn_design.cli:main"
 include = ["zfn_design*"]
 
 [tool.setuptools.package-data]
-zfn_design = ["data/*.csv", "data/*.json", "data/*.md"]
+zfn_design = ["data/*.csv", "data/*.json", "data/*.md", "data/*.docx"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

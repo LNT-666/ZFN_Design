@@ -7,4 +7,4 @@ dependencies:
   - pip
   - pip:
       - pyahocorasick>=2.0
-      - "-e ."
+      # 装完环境后在仓库根目录执行： python -m pip install -e .

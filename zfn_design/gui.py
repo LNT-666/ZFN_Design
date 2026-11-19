@@ -2090,7 +2090,8 @@ def main(argv: list[str] | None = None) -> int:
     global OUT_ROOT
     ap = argparse.ArgumentParser(description="ZFN 设计的本地图形界面")
     ap.add_argument("--host", default="127.0.0.1", help="只对本机开放，默认 127.0.0.1")
-    ap.add_argument("--port", type=int, default=0, help="0 = 自动挑一个空闲端口")
+    ap.add_argument("--port", type=int, default=8797,
+                    help="默认 8797；0 = 自动挑一个空闲端口")
     ap.add_argument("--no-browser", action="store_true", help="不自动打开浏览器")
     ap.add_argument("--out-root", default=None,
                     help="结果写到哪儿，默认 <项目>/out/gui/")
@@ -2100,7 +2101,13 @@ def main(argv: list[str] | None = None) -> int:
         OUT_ROOT = Path(args.out_root).expanduser()
         OUT_ROOT.mkdir(parents=True, exist_ok=True)
 
-    httpd = ThreadingHTTPServer((args.host, args.port), _Handler)
+    try:
+        httpd = ThreadingHTTPServer((args.host, args.port), _Handler)
+    except OSError as exc:
+        if args.port == 0:
+            raise
+        print(f"端口 {args.port} 不可用（{exc}），改为自动挑一个空闲端口")
+        httpd = ThreadingHTTPServer((args.host, 0), _Handler)
     httpd.daemon_threads = True
     port = httpd.server_address[1]
     url = f"http://{args.host}:{port}/"

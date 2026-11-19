@@ -258,6 +258,14 @@ def cmd_library(args: argparse.Namespace) -> int:
 
 def cmd_info(args: argparse.Namespace) -> int:
     print(f"ZFN_Design {__version__}")
+    try:
+        cov = load_default_library().coverage_stats()
+        print(f"\n指头库: {cov['library_name']}  {cov['n_records']} 条记录，"
+              f"覆盖 {cov['triplets_covered']}/{cov['triplets_total']} 三联体")
+        if cov["triplets_covered"] < cov["triplets_total"]:
+            print("  仅种子库，缺完整 B1H 表时结果不可用于真实设计（见 data/finger_library/README.md）")
+    except LibraryError as exc:
+        print(f"\n指头库: 加载失败 — {exc}")
     print("\n骨架模板:")
     for k in framework.template_keys():
         d = framework.describe(k)
@@ -425,7 +433,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_gui = sub.add_parser("gui", help="启动本地图形界面（浏览器打开）")
     p_gui.add_argument("--host", default="127.0.0.1", help="默认只对本机开放")
-    p_gui.add_argument("--port", type=int, default=0, help="0 = 自动挑空闲端口")
+    p_gui.add_argument("--port", type=int, default=8797,
+                       help="默认 8797；0 = 自动挑空闲端口")
     p_gui.add_argument("--no-browser", action="store_true", help="不自动打开浏览器")
     p_gui.add_argument("--out-root", default=None,
                        help="结果写到哪儿，默认 <项目>/out/gui/")
