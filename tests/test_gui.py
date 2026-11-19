@@ -81,9 +81,9 @@ def test_run_dir_is_findable(tmp_path, monkeypatch):
     assert len(list(d.iterdir())) >= 5
 
 
-def test_reveal_reports_failure_instead_of_raising():
+def test_reveal_reports_failure_instead_of_raising(tmp_path):
     """不存在的目录：必须返回 (False, 原因)，不能把异常抛给请求线程。"""
-    ok, msg = gui._reveal(gui.Path("Z:/definitely-not-here-9f3a"))
+    ok, msg = gui._reveal(tmp_path / "definitely-not-here-9f3a")
     assert ok is False
     assert msg
 
