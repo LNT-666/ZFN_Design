@@ -38,9 +38,13 @@ jobs:
       - name: Smoke test the built image
         shell: bash
         run: |
-          # Docker references must be lowercase; github.repository keeps the
-          # account's capitalisation, so normalise it before pulling.
-          image="$(echo 'ghcr.io/${{ github.repository }}:${{ github.ref_name }}' | tr '[:upper:]' '[:lower:]')"
+          # Pull back what was just pushed and run it. The tag list comes from
+          # metadata-action (already lowercased); the first entry is the most
+          # specific one, e.g. ghcr.io/lnt-666/zfn_design:v0.8.1.
+          image="$(printf '%s\n' '${{ steps.meta.outputs.tags }}' | head -n1)"
           echo "running $image"
           docker run --rm "$image" zfn-design info
           docker run --rm "$image" python -c "import zfn_design, sys; print('import ok', zfn_design.__version__, sys.version.split()[0])"
+          # The packaged smoke test is not copied into the image, so run it from
+          # the checkout against the image's own interpreter path instead.
+          docker run --rm "$image" python -c "from zfn_design import pipeline; print('pipeline import ok')"
