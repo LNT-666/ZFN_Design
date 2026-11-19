@@ -170,6 +170,8 @@ def _stamp() -> str:
 def _reveal(path: Path) -> tuple[bool, str]:
     """在系统文件管理器里打开目录。失败返回 (False, 原因)，不抛异常。"""
     try:
+        if not path.is_dir():
+            return False, f"目录不存在：{path}"
         if sys.platform.startswith("win"):
             os.startfile(str(path))  # noqa: S606  (Windows 专用)
         elif sys.platform == "darwin":
