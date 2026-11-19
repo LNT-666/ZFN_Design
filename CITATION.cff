@@ -1,12 +1,12 @@
 cff-version: 1.2.0
-title: "ZFN WebSuite: repeat-aware, genome-scale design of zinc-finger nucleases with order-ready coding sequences"
+title: "ZFN_Design: repeat-aware, genome-scale design of zinc-finger nucleases with order-ready coding sequences"
 message: "If you use this software, please cite it as below."
 type: software
 version: 0.8.1
 date-released: "2026-11-19"
 license: MIT
-repository-code: "https://github.com/REPLACE_ME/zfn-websuite"
-url: "https://zfn.mobilome.cn/"
+repository-code: "https://github.com/LNT-666/ZFN_Design"
+url: "https://github.com/LNT-666/ZFN_Design"
 keywords:
   - zinc finger nuclease
   - ZFN
@@ -15,14 +15,25 @@ keywords:
   - codon optimization
   - repeat masking
 abstract: >-
-  A self-contained web server and command-line toolkit that turns a DNA sequence
-  or a whole genome into ranked ZFN designs: candidate enumeration, genome-wide
-  repeat-aware filtering (RepeatMasker annotation plus genome-wide copy number),
-  six-component design scoring, genome-scale off-target burden estimation, and
-  fusion-protein construction with humanized coding sequences and an order form.
+  A self-contained command-line and local-browser toolkit that turns a DNA
+  sequence or a whole genome into ranked ZFN designs: candidate enumeration,
+  genome-wide repeat-aware filtering (RepeatMasker annotation plus genome-wide
+  copy number), six-component design scoring, genome-scale off-target burden
+  estimation, and fusion-protein construction with humanized coding sequences
+  and an order form.
 authors:
-  - name: "ZFN WebSuite contributors"
-    # TODO: replace with the final author list (names, ORCID, affiliation) before release.
+  - family-names: Song
+    given-names: Ji
+    affiliation: "School of Mathematics, Sun Yat-sen University, Guangzhou, China"
+  - family-names: Ma
+    given-names: Jiayue
+    affiliation: "State Key Laboratory of Mycology, Institute of Microbiology, Chinese Academy of Sciences, Beijing, China"
+  - family-names: Shi
+    given-names: Shasha
+    affiliation: "Yangzhou University, Yangzhou, China"
+  - family-names: Wang
+    given-names: Saisai
+    affiliation: "State Key Laboratory of Mycology, Institute of Microbiology, Chinese Academy of Sciences, Beijing, China"
 # References cited by the software / manuscript.
 references:
   - type: article
