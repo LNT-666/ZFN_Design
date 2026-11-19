@@ -1,0 +1,4 @@
+helix_id,triplet,helix7,evidence_level,source_type,source_id,assay,affinity_nM,split_position,notes
+1AAY_F1,GCG,RSDELTR,literature,pdb,1AAY,crystal_structure,,F1,来自 Zif268 指1 识别螺旋；1AAY 晶体结构
+1AAY_F2,TGG,RSDHLTT,literature,pdb,1AAY,crystal_structure,,F2,来自 Zif268 指2 识别螺旋；1AAY 晶体结构
+1AAY_F3,GCG,RSDERKR,literature,pdb,1AAY,crystal_structure,,F3,来自 Zif268 指3 识别螺旋；1AAY 晶体结构

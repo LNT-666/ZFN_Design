@@ -1,0 +1,4 @@
+# 指头库 / Finger library — do not commit
+
+`*.csv` in this folder is third-party data (Persikov et al. 2015 B1H table) and must not be
+pushed to a public repository. Only `README.md` is versioned.

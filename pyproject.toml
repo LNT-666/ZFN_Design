@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zfn-design"
+version = "0.8.0"
+description = "从 DNA 序列出发的 ZFN/ZFP 靶点筛选、锌指阵列设计、可审计打分与报告"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "ZFN_Design contributors" }]
+dependencies = []            # 刻意零依赖：只用标准库
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+zfn-design = "zfn_design.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["zfn_design*"]
+
+[tool.setuptools.package-data]
+zfn_design = ["data/*.csv", "data/*.json", "data/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

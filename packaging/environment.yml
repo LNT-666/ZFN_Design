@@ -1,0 +1,10 @@
+name: zfn-websuite
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy>=1.26
+  - pip
+  - pip:
+      - pyahocorasick>=2.0
+      - "-e ."

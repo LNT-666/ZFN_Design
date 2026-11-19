@@ -1,0 +1,27 @@
+{
+  "_about": "ZF 阵列蛋白骨架模板。{h1}/{h2}/{h3} 会被替换成三个识别螺旋的 7 残基。",
+  "_provenance": "模板逐字符取自 PDB 1AAY A 链（Zif268, Mus musculus）。把 h1/h2/h3 填回 RSDELTR/RSDHLTT/RSDERKR 必须精确还原 1AAY 序列，这一点由 tests/test_framework.py 断言。",
+  "templates": {
+    "zif268_1aay": {
+      "label": "Zif268 (PDB 1AAY) 骨架 + 真实连接区",
+      "sequence_template": "MERPYACPVESCDRRFS{h1}HIRIHTGQKPFQCRICMRNFS{h2}HIRTHTGEKPFACDICGRKFA{h3}HTKIHLRQKD",
+      "helix_slots": ["{h1}", "{h2}", "{h3}"],
+      "n_fingers": 3,
+      "evidence_level": "literature",
+      "source_id": "PDB:1AAY",
+      "notes": "backbone-swap 策略：保留真实骨架与 TGEKP 连接区，只替换识别螺旋。不是从头设计，也不是 Sangamo 的专有骨架。",
+      "placeholder_residue_note": "若某个 helix7 的第 4 位为 X（位置 4 不接触 DNA），该位会原样写进蛋白序列，需在真正合成前替换为合理残基（通常 L 或 S）。"
+    },
+    "zif268_x2_junction": {
+      "label": "1AAY 三指模块 ×2 + TGEKP 连接（六指阵列）",
+      "sequence_template": "MERPYACPVESCDRRFS{h1}HIRIHTGQKPFQCRICMRNFS{h2}HIRTHTGEKPFACDICGRKFA{h3}HTKIHLRQKDTGEKPERPYACPVESCDRRFS{h4}HIRIHTGQKPFQCRICMRNFS{h5}HIRTHTGEKPFACDICGRKFA{h6}HTKIHLRQKD",
+      "helix_slots": ["{h1}", "{h2}", "{h3}", "{h4}", "{h5}", "{h6}"],
+      "n_fingers": 6,
+      "evidence_level": "constructed",
+      "source_id": "PDB:1AAY ×2",
+      "notes": "六指阵列 = 两个完整的三指模块（各 90 aa，逐字符取自 1AAY）经一个 TGEKP 连接肽串联；模块 B 去掉起始 Met。两个模块各自折叠的证据来自 1AAY，但**模块间界面、连接肽长度与相对取向没有任何结构或活性证据**，必须在湿实验里单独验证。",
+      "placeholder_residue_note": "若某个 helix7 的第 4 位为 X（位置 4 不接触 DNA），该位会原样写进蛋白序列，需在真正合成前替换为合理残基（通常 L 或 S）。"
+    }
+  },
+  "default": "zif268_1aay"
+}

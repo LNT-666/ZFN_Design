@@ -1,0 +1,51 @@
+cff-version: 1.2.0
+title: "ZFN WebSuite: repeat-aware, genome-scale design of zinc-finger nucleases with order-ready coding sequences"
+message: "If you use this software, please cite it as below."
+type: software
+version: 0.8.0
+date-released: "2026-11-19"
+license: MIT
+repository-code: "https://github.com/REPLACE_ME/zfn-websuite"
+url: "https://zfn.mobilome.cn/"
+keywords:
+  - zinc finger nuclease
+  - ZFN
+  - genome editing
+  - off-target prediction
+  - codon optimization
+  - repeat masking
+abstract: >-
+  A self-contained web server and command-line toolkit that turns a DNA sequence
+  or a whole genome into ranked ZFN designs: candidate enumeration, genome-wide
+  repeat-aware filtering (RepeatMasker annotation plus genome-wide copy number),
+  six-component design scoring, genome-scale off-target burden estimation, and
+  fusion-protein construction with humanized coding sequences and an order form.
+authors:
+  - name: "ZFN WebSuite contributors"
+    # TODO: replace with the final author list (names, ORCID, affiliation) before release.
+# References cited by the software / manuscript.
+references:
+  - type: article
+    title: "A systematic survey of the Cys2His2 zinc finger DNA-binding landscape"
+    authors:
+      - family-names: Persikov
+        given-names: Anton V.
+      - family-names: Wetzel
+        given-names: Jennifer L.
+      - family-names: Rowland
+        given-names: Eric F.
+      - family-names: Oakes
+        given-names: Benjamin L.
+      - family-names: Xu
+        given-names: Dennis J.
+      - family-names: Singh
+        given-names: Mona
+      - family-names: Noyes
+        given-names: Marcus B.
+    journal: "Nucleic Acids Research"
+    volume: 43
+    issue: 3
+    start: 1965
+    end: 1984
+    year: 2015
+    doi: "10.1093/nar/gku1395"

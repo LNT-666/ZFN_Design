@@ -1,0 +1,27 @@
+# Build artifacts / caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+.pylibs/
+build/
+dist/
+
+# Run outputs
+out/
+_cli_out/
+scan_out/
+*.log
+
+# Local data that must NOT be redistributed
+# (the complete B1H finger-weight table is not included; ask its authors)
+zfn_design/data/finger_library/*.csv
+zfn_design/data/finger_library_b1h.csv
+!zfn_design/data/finger_library_seed.csv
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

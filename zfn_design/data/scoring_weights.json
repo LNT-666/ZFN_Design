@@ -1,0 +1,51 @@
+{
+  "_about": "打分权重：Design score 只含 6 个设计分项（evidence/subsite/gc_balance/finger_diversity/complexity/self_complementarity，权重和 = 1.0）；spacer 权重固定 0，只作为诊断列；脱靶负担不在这里，见 score_offtarget。",
+  "_warning": "这些权重是工程默认值，不是从实验数据拟合出来的。任何排序结果都只代表'按这些规则看起来更好'，不代表活性更高。",
+  "weights": {
+    "evidence": 0.428571,
+    "subsite": 0.257143,
+    "spacer": 0.0,
+    "gc_balance": 0.1,
+    "finger_diversity": 0.1,
+    "complexity": 0.057143,
+    "self_complementarity": 0.057143
+  },
+  "grades": {
+    "A": 85.0,
+    "B": 70.0,
+    "C": 55.0
+  },
+  "rules": {
+    "_about": "下面是各分项内部的扣分规则，单位是分。",
+    "subsite": {
+      "first_base_G": 100.0,
+      "first_base_A_or_T": 62.0,
+      "first_base_C": 40.0,
+      "penalty_contains_CG": 30.0,
+      "penalty_homopolymer_triplet": 12.0
+    },
+    "spacer": {
+      "len_6": 100.0,
+      "len_5_or_7": 72.0
+    },
+    "gc_balance": {
+      "ideal_low": 0.4,
+      "ideal_high": 0.6,
+      "acceptable_low": 0.3,
+      "acceptable_high": 0.7
+    },
+    "complexity": {
+      "max_homopolymer_ok": 4,
+      "max_homopolymer_bad": 7,
+      "tandem_unit": 2,
+      "tandem_count_ok": 2,
+      "tandem_count_bad": 5
+    },
+    "offtarget": {
+      "burden_scale": 25.0
+    },
+    "finger_diversity": {
+      "adjacent_identical_helix": 55.0
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "_about": "融合构建（fusion）用的标准元件序列。凡是 evidence_level 不是 verified 的元件，程序都会在报告里打红旗，提醒你去核对原始文献再用。ELD / KKK / KK 三种 FokI 变体是程序按 Miller 2007、Doyon 2011 的位点在 FokI_CD 上替换生成的（derived），用前务必核对；成对核酸酶默认用已发表的 ELD:KKK 组合，KK（E490K/I538K）仅保留作兼容，不是文献里验证过的配对。",
+  "parts": {
+    "NLS_SV40": {
+      "label": "SV40 大 T 抗原核定位信号",
+      "sequence": "PKKKRKV",
+      "position": "N",
+      "evidence_level": "verified",
+      "source_id": "Kalderon et al. 1984, Cell 39:499-509",
+      "notes": "7 残基经典 NLS，被广泛使用；各家试剂盒都用这一段。"
+    },
+    "VP64": {
+      "label": "VP64 转录激活域（VP16 四聚最小激活域）",
+      "sequence": "GRADALDDFDLDMLGSDALDDFDLDMLGSDALDDFDLDMLGSDALDDFDLDML",
+      "position": "C",
+      "evidence_level": "verified",
+      "source_id": "Beerli & Barbas 2002, Nat Biotechnol 20:135-141; 宋成义 2026-11-18 提供并核对",
+      "notes": "4 个 DALDDFDLDML 最小激活域 + GS 连接（53 aa）。与最常见的 VP64 版本逐位一致，唯一差别是末端少了 IN 二肽（原始构建的连接残留，不影响激活功能）。"
+    },
+    "FokI_CD": {
+      "label": "FokI 核酸酶催化域",
+      "sequence": "QLVKSELEEKKSELRHKLKYVPHEYIELIEIARNSTQDRILEMKVMEFFMKVYGYRGKHLGGSRKPDGAIYTVGSPIDYGVIVDTKAYSGGYNLPIGQADEMQRYVEENQTRNKHINPNEWWKVYPSSVTEFKFLFVSGHFKGNYKAQLTRLNHITNCNGAVLSVEELLIGGEMIKAGTLTLEEVRRKFNNGEINF",
+      "position": "C",
+      "evidence_level": "verified",
+      "source_id": "UniProt P14870 (T2F1_PLAOK) aa 384-579；宋成义 2026-11-18 提供并核对",
+      "notes": "FokI 天然 C 端核酸酶域 196 aa，与 UniProt P14870 第 384-579 位逐位一致（含 384-388 的 QLVKS 起端）。"
+    },
+    "KRAB": {
+      "label": "KRAB 转录抑制域（Kox1）",
+      "sequence": "MDAKSLTAWSRTLVTFKDVFVDFTREEWKLLDTAQQIVYRNVMLENYKNLVSLGYQLTKPDVILRLEKGEEPWLVEREIHQETHPDSETA",
+      "position": "C",
+      "evidence_level": "verified",
+      "source_id": "UniProt P21506 (ZNF10_HUMAN) aa 1-90；宋成义 2026-11-18 提供并核对",
+      "notes": "人 ZNF10 (Kox1) KRAB 域 A-box+B-box，90 aa，与 UniProt P21506 前 90 位逐位一致。"
+    },
+    "linker_GGGGS": {
+      "label": "柔性连接 (G4S)1",
+      "sequence": "GGGGS",
+      "position": "between",
+      "evidence_level": "verified",
+      "source_id": "常用柔性 linker（Huston et al. 1988）",
+      "notes": "长度可按需重复。"
+    },
+    "linker_flex": {
+      "label": "ZF 与效应域之间的柔性连接 (G4S)2",
+      "sequence": "GGGGSGGGGS",
+      "position": "between",
+      "evidence_level": "verified",
+      "source_id": "常用柔性 linker（Huston et al. 1988 PNAS；ZFN/ZF-TF 构建通用）",
+      "notes": "10 aa 柔性接头。ZF 骨架 C 端缺少天然的 TGEKP 连接区，接效应域时必须补一段柔性 linker，否则空间位阻。"
+    },
+    "FokI_CD_ELD": {
+      "label": "FokI 催化域 · ELD（强制异二聚体，左侧用）",
+      "sequence": "QLVKSELEEKKSELRHKLKYVPHEYIELIEIARNSTQDRILEMKVMEFFMKVYGYRGKHLGGSRKPDGAIYTVGSPIDYGVIVDTKAYSGGYNLPIGQADEMERYVEENQTRDKHLNPNEWWKVYPSSVTEFKFLFVSGHFKGNYKAQLTRLNHITNCNGAVLSVEELLIGGEMIKAGTLTLEEVRRKFNNGEINF",
+      "position": "C",
+      "evidence_level": "derived",
+      "source_id": "UniProt P14870 aa 384-579 + Miller et al. 2007 Nat Biotechnol 25:778-785（ELD 变体）",
+      "notes": "在 FokI_CD 上做 Q486E / N496D / I499L 三点突变（编号按 P14870 全长）。与 KK 配对使用，抑制同源二聚。序列由本程序按位点替换生成，下游仍需核对。"
+    },
+    "FokI_CD_KK": {
+      "label": "FokI 催化域 · KK（强制异二聚体，右侧用）",
+      "sequence": "QLVKSELEEKKSELRHKLKYVPHEYIELIEIARNSTQDRILEMKVMEFFMKVYGYRGKHLGGSRKPDGAIYTVGSPIDYGVIVDTKAYSGGYNLPIGQADEMQRYVKENQTRNKHINPNEWWKVYPSSVTEFKFLFVSGHFKGNYKAQLTRLNHKTNCNGAVLSVEELLIGGEMIKAGTLTLEEVRRKFNNGEINF",
+      "position": "C",
+      "evidence_level": "derived",
+      "source_id": "UniProt P14870 aa 384-579 + Miller et al. 2007 Nat Biotechnol 25:778-785（KK 变体）",
+      "notes": "在 FokI_CD 上做 E490K / I538K 两点突变（编号按 P14870 全长）。与 ELD 配对使用，抑制同源二聚。序列由本程序按位点替换生成，下游仍需核对。"
+    },
+    "FokI_CD_KKK": {
+      "label": "FokI 催化域 · KKK（强制异二聚体，与 ELD 配对）",
+      "sequence": "QLVKSELEEKKSELRHKLKYVPHEYIELIEIARNSTQDRILEMKVMEFFMKVYGYRGKHLGGSRKPDGAIYTVGSPIDYGVIVDTKAYSGGYNLPIGQADEMQRYVKENQTRNKHINPNEWWKVYPSSVTEFKFLFVSGHFKGNYKAQLTRLNKKTNCNGAVLSVEELLIGGEMIKAGTLTLEEVRRKFNNGEINF",
+      "position": "C",
+      "evidence_level": "derived",
+      "source_id": "UniProt P14870 aa 384-579 + Doyon et al. 2011 Nat Methods 8:74-79（ELD:KKK）",
+      "notes": "在 FokI_CD 上做 E490K / I538K / H537K 三点突变（编号按 P14870 全长）。与 ELD 配对构成已发表的强制异二聚体 ELD:KKK，抑制同源二聚。序列由本程序按位点替换生成，下游仍需核对。"
+    }
+  },
+  "architectures": {
+    "paired_nuclease": {
+      "label": "成对核酸酶（经典 ZFN）",
+      "description": "两个单体分别结合左/右半位点，各自 C 端带 FokI 催化域；两个 FokI 在同一 spacer 上二聚化才产生双链断裂。",
+      "order": [
+        "NLS_SV40",
+        "ZF_ARRAY",
+        "LINKER",
+        "FokI_CD_ELD"
+      ],
+      "requires": [
+        "FokI_CD_ELD",
+        "FokI_CD_KKK"
+      ],
+      "dimer": true,
+      "chains": [
+        {
+          "side": "left",
+          "fok_part": "FokI_CD_ELD",
+          "label": "左侧 ZFN（ELD）"
+        },
+        {
+          "side": "right",
+          "fok_part": "FokI_CD_KKK",
+          "label": "右侧 ZFN（KKK）"
+        }
+      ]
+    },
+    "single_activator": {
+      "label": "单体型转录激活因子（ZF-VP64）",
+      "description": "没有 FokI，也不需要成对位点；一个 3 指阵列 + VP64 直接招募转录机器。用于把靶基因打开。",
+      "order": [
+        "NLS_SV40",
+        "ZF_ARRAY",
+        "LINKER",
+        "VP64"
+      ],
+      "requires": [],
+      "dimer": false
+    },
+    "single_repressor": {
+      "label": "单体型转录抑制因子（ZF-KRAB）",
+      "description": "3 指阵列 + KRAB 抑制域；同样不需要成对位点，KRAB 用内置 Kox1 90 aa 片段（可换成你实验室验证过的片段）。",
+      "order": [
+        "NLS_SV40",
+        "ZF_ARRAY",
+        "LINKER",
+        "KRAB"
+      ],
+      "requires": [
+        "KRAB"
+      ],
+      "dimer": false
+    }
+  }
+}
