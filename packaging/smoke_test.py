@@ -16,15 +16,43 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
+FLANK_LEFT = "ATGGCCTTAGCAAGGTTACCGGATCC"
+FLANK_RIGHT = "GGTTAGCACCTGATCGTAGCTAGGCTA"
+SPACER = "GATCTA"
+
+
+def _demo_site() -> str:
+    """Build a target site the shipped finger library can actually design.
+
+    A clean checkout carries only the three-finger PDB seed (triplets GCG and
+    TGG). A random synthetic sequence has essentially no chance of containing
+    a 24 bp site whose six triplets are all covered, so the smoke test would
+    fail on every fresh install. Deriving the site from the library keeps the
+    test honest as a gate: library, scanner, target filter, designability,
+    scoring and fusion all really run, and it stays valid when the full B1H
+    library is installed too.
+    """
+    from zfn_design.library import load_default_library
+
+    lib = load_default_library()
+    triplets = sorted({r.triplet for r in lib})
+    if not triplets:
+        raise SystemExit("FAIL: finger library is empty")
+    # GCG is the 1AAY seed triplet and sits in every full B1H library, so the
+    # demo site is the same on a bare checkout and on a fully populated one.
+    t = "GCG" if "GCG" in triplets else triplets[0]
+    left = t * 3
+    comp = str.maketrans("ACGT", "TGCA")
+    right = left.translate(comp)[::-1]
+    print(f"library: {lib.name} ({len(triplets)} triplets), site {left}-{SPACER}-{right}")
+    return FLANK_LEFT + left + SPACER + right + FLANK_RIGHT
+
+
 def main() -> int:
     from zfn_design import fusion_stage, pipeline
     from zfn_design.models import SequenceRecord
 
-    seq = (
-        "ATGGCCTTGACAGGTCTAGCAAGGTTACCGGATCCGTTAGCACCTGATCGTAGCTAGGCTA"
-        "CCGTAGCTAGCTAGGCTTACCGATCGTAGCTAGCTAACGTTAGGCATCGTAGCTAGGCATC"
-        "GTAGCTAGCTAGGCATCGTAGCTAGCTAGGCATCGTAGCTAGCTAGGCATCGTAGCTAGGC"
-    )
+    seq = _demo_site()
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / "run"
         payload = pipeline.run(

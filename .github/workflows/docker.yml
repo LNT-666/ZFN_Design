@@ -36,4 +36,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Smoke test the built image
-        run: docker run --rm ghcr.io/${{ github.repository }}:${{ github.ref_name }} zfn-design info
+        shell: bash
+        run: |
+          # Docker references must be lowercase; github.repository keeps the
+          # account's capitalisation, so normalise it before pulling.
+          image="$(echo 'ghcr.io/${{ github.repository }}:${{ github.ref_name }}' | tr '[:upper:]' '[:lower:]')"
+          echo "running $image"
+          docker run --rm "$image" zfn-design info
+          docker run --rm "$image" python -c "import zfn_design, sys; print('import ok', zfn_design.__version__, sys.version.split()[0])"
