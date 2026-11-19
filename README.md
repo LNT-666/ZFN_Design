@@ -1,5 +1,7 @@
 # ZFN WebSuite (`zfn_design`)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24364026.svg)](https://doi.org/10.5281/zenodo.24364026)
+
 **输入一段 DNA 序列或整个基因组，筛出能做 ZFN 的靶点、给出锌指蛋白序列、打分、做全基因组脱靶评估，最后给出可下单的融合蛋白与人源化 CDS。**
 
 纯标准库 Python 3.10+，可离线运行；图形界面与命令行共用同一套 `pipeline`。

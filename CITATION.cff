@@ -7,6 +7,14 @@ date-released: "2026-11-19"
 license: MIT
 repository-code: "https://github.com/LNT-666/ZFN_Design"
 url: "https://github.com/LNT-666/ZFN_Design"
+doi: "10.5281/zenodo.24364027"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.24364027"
+    description: "Archived release, version 0.8.1"
+  - type: doi
+    value: "10.5281/zenodo.24364026"
+    description: "Concept DOI, all versions"
 keywords:
   - zinc finger nuclease
   - ZFN
