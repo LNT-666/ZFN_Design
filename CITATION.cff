@@ -2,7 +2,7 @@ cff-version: 1.2.0
 title: "ZFN WebSuite: repeat-aware, genome-scale design of zinc-finger nucleases with order-ready coding sequences"
 message: "If you use this software, please cite it as below."
 type: software
-version: 0.8.0
+version: 0.8.1
 date-released: "2026-11-19"
 license: MIT
 repository-code: "https://github.com/REPLACE_ME/zfn-websuite"

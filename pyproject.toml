@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zfn-design"
-version = "0.8.0"
+version = "0.8.1"
 description = "从 DNA 序列出发的 ZFN/ZFP 靶点筛选、锌指阵列设计、可审计打分与报告"
 readme = "README.md"
 requires-python = ">=3.10"
