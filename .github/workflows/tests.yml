@@ -21,8 +21,8 @@ jobs:
       - name: Install package
         run: |
           python -m pip install --upgrade pip
-          python -m pip install numpy pyahocorasick pytest
-          python -m pip install --no-build-isolation -e .
+          python -m pip install setuptools wheel numpy pyahocorasick pytest
+          python -m pip install -e .
       - name: CLI self-check
         run: zfn-design info
       - name: Run tests

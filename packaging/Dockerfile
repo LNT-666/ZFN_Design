@@ -22,12 +22,12 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # 1) optional accelerators first (they are pure wheels, no compiler needed)
-RUN pip install --no-cache-dir "numpy>=1.26" "pyahocorasick>=2.0"
+RUN pip install --no-cache-dir "setuptools>=68" "wheel" "numpy>=1.26" "pyahocorasick>=2.0"
 
 # 2) the package itself
 COPY pyproject.toml README.md ./
 COPY zfn_design ./zfn_design
-RUN pip install --no-cache-dir --no-build-isolation .
+RUN pip install --no-cache-dir .
 
 # 3) a non-root user, because the server binds a port and writes result dirs
 RUN useradd --create-home --uid 1000 runner && mkdir -p /out && chown -R runner /out
