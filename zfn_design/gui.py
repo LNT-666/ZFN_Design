@@ -848,7 +848,7 @@ INDEX_HTML = r"""<!doctype html>
 <body>
 
 <header><div class="wrap">
-  <button class="langbtn" id="lang" type="button" title="Switch language / 切换语言">EN</button>
+  <button class="langbtn" id="lang" type="button" title="Switch language / 切换语言" data-i18n-title="1">EN</button>
   <a class="doclink" id="doclink" href="/manual?lang=zh">使用说明书</a>
   <h1>ZFN 设计工作台 <small>本地图形界面 · 后端就是 <span class="mono">zfn_design</span> 本体</small></h1>
   <div class="sub" id="env">正在读取引擎信息…</div>
@@ -1101,6 +1101,250 @@ const I18N_EN = {
   "引擎信息读取失败":"failed to read engine info",
   "打不开文件管理器：":"cannot open the file manager:"
 };
+const I18N_EXTRA = {
+  "引擎":"Engine",
+  "输出文件在临时目录，关掉服务不会自动删除。":"Output files go to a temporary directory; stopping the service does not delete them.",
+  "前提：只有通过 Target filter（全基因组重复过滤）的候选，才能做 Off-target Score。":"Only candidates that passed Target filter (genome-wide repeat filtering) can be scored for off-target burden.",
+  "所以请先在「Target filter」里选基因组 FASTA（可选再加 RepeatMasker 注释），跑一次 Design Score， 再点本按钮。没走过过滤的作业会被拒绝，并提示原因。":"Pick a genome FASTA (and optionally a RepeatMasker annotation) under “Target filter”, run Design Score once, then press this button. Jobs that skipped filtering are refused, with the reason given.",
+  "成对核酸酶（经典 ZFN）":"Paired nuclease (classic ZFN)",
+  "单体型转录激活因子（ZF-VP64）":"Single-chain activator (ZF-VP64)",
+  "单体型转录抑制因子（ZF-KRAB）":"Single-chain repressor (ZF-KRAB)",
+};
+Object.assign(I18N_EN, I18N_EXTRA);
+const I18N_RULES = [
+  [/指头库\s*([\d,]+)\s*条，\s*覆盖\s*(\d+)\/(\d+)\s*个三联体\s*·\s*打分权重\s*(\d+)\s*分项/, m => `finger library ${m[1]} records · triplets ${m[2]}/${m[3]} · ${m[4]} score components`],
+];
+
+/* ---- i18n pass 2: rendered panels ---- */
+const I18N_EXTRA2 = {
+  "最重要的限制：三指 ZFP 只读取 9 bp，单独作为单体在人类基因组中并不唯一。若需要基因组单拷贝结合，应把它作为 ZFN 配对的一半（本工具默认成对输出），或加长阵列（六指读 18 bp）并重新验证。本文件不保证活性或特异性，所有设计均需实验验证。": "Most important limitation: a three-finger ZFP reads only 9 bp, and as a monomer it is not unique in a human genome. For single-copy binding, use it as one half of a ZFN pair (this tool outputs pairs by default) or lengthen the array (6 fingers, 18 bp) and re-validate. This file guarantees neither activity nor specificity; every design needs experimental validation.",
+  "④ S4 · Fusion design（单独执行，不重跑设计）": "④ S4 · Fusion design (run separately, no re-design)",
+  "从这次结果里挑设计，接上效应结构，生成蛋白序列与人源化 CDS，并出一张合成订单表。": "Pick designs from this run, attach an effector domain, emit protein sequences with humanised CDS and a synthesis order form.",
+  "S3 跑完也可以直接点这里：会带上该设计的 off-target 分（burden）一起进订单表。": "After S3 you can press this too: the design's off-target score (burden) is carried into the order form.",
+  "取前": "Top",
+  "个设计": "designs",
+  "激活（VP64）": "Activator (VP64)",
+  "抑制（KRAB）": "Repressor (KRAB)",
+  "核酸酶（FokI）": "Nuclease (FokI)",
+  "需要换元件就填序列（JSON：{\"KRAB\":\"…\",\"FokI_CD\":\"…\"}）": "Paste sequences here to override parts (JSON: {\"KRAB\":\"…\",\"FokI_CD\":\"…\"})",
+  "设计（按分数排序）": "Designs (ranked by score)",
+  "分项": "Component",
+  "权重": "Weight",
+  "加权": "Weighted",
+  "依据": "Detail",
+  "指头证据强度": "Finger evidence",
+  "三联体质量": "Triplet quality",
+  "GC 平衡": "GC balance",
+  "spacer 长度": "Spacer length",
+  "指头多样性": "Finger diversity",
+  "序列复杂度": "Sequence complexity",
+  "自身互补风险": "Self-complementarity risk",
+  "无相邻重复螺旋": "no adjacent identical helices",
+  "无内部反向重复": "no internal inverted repeat",
+  "候选位点": "Candidate sites",
+  "可设计·Tier1": "Designable (Tier 1)",
+  "含未验证": "With unverified",
+  "库覆盖": "Library coverage",
+  "CDS 可用": "CDS ready",
+  "CDS 总长": "Total CDS",
+  "S4 只读这次作业的 report.json，不重算 S1–S3； 蛋白里的 [元件:状态] 方括号 = 缺该元件的可靠序列，那种条目不会出 CDS。": "S4 only reads this job's report.json and does not re-run S1–S3. Bracketed [part:status] in a protein means the reliable sequence is missing for that part, and no CDS is emitted for such an entry.",
+  "⚠ 这是成对设计的单侧单体：单独做成 ZF-TF 后只剩一个半位点的特异性，不再有 FokI 二聚化带来的额外约束": "⚠ This is one monomer of a paired design: as a standalone ZF-TF it keeps the specificity of a single half-site, without the extra constraint of FokI dimerisation",
+  "⚠ N 端补了 Met（起始密码子 ATG）；若实验室构型不同请自行调整": "⚠ An N-terminal Met was added to supply the ATG start codon; adjust it if your construct differs",
+  "这次作业没带基因组 FASTA，无法做全基因组脱靶；请先勾选基因组重跑 Design Score": "This job carries no genome FASTA, so a genome-wide off-target scan is impossible; pick a genome and re-run Design Score first",
+  "没有可输出的设计——位点全部落在指头库缺口上。": "No designs to emit — every site falls into a gap of the finger library.",
+  "这段输入最缺的三联体": "Triplets this input most lacks",
+  "候选位点（前 25 条）": "Candidate sites (first 25)",
+  "左半位点": "Left half-site",
+  "右半位点": "Right half-site",
+  "可设计性": "Designability",
+  "组合数": "Combinations",
+  "出现次数": "Occurrences",
+  "当前库": "In library",
+  "缺口次数": "Gap count",
+  "三联体": "Triplet",
+  "结果": "Results",
+  "参与设计": "Designs scored",
+  "burden 最低": "Lowest burden",
+  "burden 最高": "Highest burden",
+  "off-target score 最高": "Best off-target score",
+  "burden 排名": "Burden rank",
+  "设计": "Design",
+  "位点": "Site",
+  "近似位点（错配:条数）": "Near-sites (mismatches:count)",
+  "两个分并列，": "The two scores are reported side by side, ",
+  "不相加": "never summed",
+  "。burden 越小越好；命中数触到上限时 burden 是下限，标「（下限）」。": ". Lower burden is better; when the hit cap is reached the burden is a lower bound and is marked “(lower bound)”.",
+  "输出目录": "Output directory",
+  "打开文件夹": "Open folder",
+};
+Object.assign(I18N_EN, I18N_EXTRA2);
+I18N_RULES.push(...[
+  [/指头库\s*([\d,]+)\s*条，\s*覆盖\s*(\d+)\/(\d+)\s*个三联体\s*·\s*打分权重\s*(\d+)\s*分项/, m => `finger library ${m[1]} records · triplets ${m[2]}/${m[3]} · ${m[4]} score components`],
+  [/(\d[\d,]*)\s*个位点用到了「非本位上下文」的指头：库里的实测数据只覆盖部分阵列位置（Princeton B1H 提供 F2\/F3），缺口位置退而使用同一三联体在别的指位实测的指头。这些指头在该位点的行为未经验证。/, m => `${m[1]} sites use fingers measured in a non-native context: the library covers only some array positions (Princeton B1H covers F2/F3); gaps fall back to the same triplet measured at another position. Behaviour at those sites is unverified.`],
+  [/(\d+)\s*条指头：Tier1=(\d+),\s*Tier2=(\d+)；来源=\[(.*?)\]/, m => `${m[1]} fingers: Tier 1=${m[2]}, Tier 2=${m[3]}; sources=[${m[4]}]`],
+  [/(\d+)\s*个指位三联体（均值\s*([\d.]+)）：/, m => `${m[1]} triplet positions (mean ${m[2]}): `],
+  [/首位 G（GNN 偏好）/g, "G at position 1 (GNN preferred)"],
+  [/首位 ([ACGT])/g, "$1 at position 1"],
+  [/GC=([\d.]+)%（理想 40%-60%）/, m => `GC=${m[1]}% (ideal 40–60%)`],
+  [/spacer=(\w+)（(\d+) bp）/, m => `spacer=${m[1]} (${m[2]} bp)`],
+  [/最长同碱基串=(\d+)；2-mer 重复数=(\d+)/, m => `longest homopolymer=${m[1]}; 2-mer repeats=${m[2]}`],
+  [/脱靶 burden=([\d.]+)，命中 (\d+) 个（exact (\d+)）· 证据层级 Tier(\d+)/, m => `off-target burden=${m[1]}, hits ${m[2]} (exact ${m[3]}) · evidence tier ${m[4]}`],
+  [/· 组合型（成对） · 三联体 /, "· paired · triplets "],
+  [/· 单体型（单阵列） · 三联体 /, "· single array · triplets "],
+  [/起始 (\w+) · 终止 (\w+) · 含 NLS/, m => `start ${m[1]} · stop ${m[2]} · NLS present`],
+  [/· off-target 未算/, "· off-target not computed"],
+  [/左单体蛋白序列（(\d+) aa）/, m => `Left monomer protein (${m[1]} aa)`],
+  [/右单体蛋白序列（(\d+) aa）/, m => `Right monomer protein (${m[1]} aa)`],
+  [/阵列蛋白序列（(\d+) aa）/, m => `Array protein (${m[1]} aa)`],
+  [/融合蛋白（(\d+) aa）/, m => `Fusion protein (${m[1]} aa)`],
+  [/CDS（(\d+) bp，GC ([\d.]+)%，Kozak (\w+)，起始 (\w+) \/ 终止 (\w+)）/, m => `CDS (${m[1]} bp, GC ${m[2]}%, Kozak ${m[3]}, start ${m[4]} / stop ${m[5]})`],
+  [/完成 · (\d+)%/, m => `Done · ${m[1]}%`],
+  [/失败 · (\d+)%/, m => `Failed · ${m[1]}%`],
+  [/共 (\d+) 条，完整清单见 sites\.tsv/, m => `${m[1]} rows in total; the full list is in sites.tsv`],
+]);
+const I18N_SUB = [
+  ["最重要的限制：三指 ZFP 只读取 9 bp，单独作为单体在人类基因组中并不唯一。若需要基因组单拷贝结合，应把它作为 ZFN 配对的一半（本工具默认成对输出），或加长阵列（六指读 18 bp）并重新验证。本文件不保证活性或特异性，所有设计均需实验验证。", "Most important limitation: a three-finger ZFP reads only 9 bp, and as a monomer it is not unique in a human genome. For single-copy binding use it as one half of a ZFN pair (this tool outputs pairs by default) or lengthen the array (6 fingers, 18 bp) and re-validate. This file guarantees neither activity nor specificity; every design needs experimental validation."],
+  ["个位点用到了「非本位上下文」的指头：库里的实测数据只覆盖部分阵列位置（Princeton B1H 提供 F2/F3），缺口位置退而使用同一三联体在别的指位实测的指头。这些指头在该位点的行为未经验证。", " sites use fingers measured in a non-native context: the library covers only some array positions (Princeton B1H covers F2/F3); gaps fall back to the same triplet measured at another position. Behaviour at those sites is unverified."],
+  ["S4 只读这次作业的 report.json，不重算 S1–S3； 蛋白里的 [元件:状态] 方括号 = 缺该元件的可靠序列，那种条目不会出 CDS。", "S4 only reads this job's report.json and does not re-run S1–S3. A bracketed [part:status] in a protein means the reliable sequence is missing for that part, and no CDS is emitted for such an entry."],
+  ["⚠ 这是成对设计的单侧单体：单独做成 ZF-TF 后只剩一个半位点的特异性，不再有 FokI 二聚化带来的额外约束", "⚠ This is one monomer of a paired design: as a standalone ZF-TF it keeps the specificity of a single half-site, without the extra constraint of FokI dimerisation"],
+  ["S3 跑完也可以直接点这里：会带上该设计的 off-target 分（burden）一起进订单表。", "After S3 you can press this too: the design's off-target score (burden) is carried into the order form."],
+  ["这次作业没带基因组 FASTA，无法做全基因组脱靶；请先勾选基因组重跑 Design Score", "This job carries no genome FASTA, so a genome-wide off-target scan is impossible; pick a genome and re-run Design Score first"],
+  ["从这次结果里挑设计，接上效应结构，生成蛋白序列与人源化 CDS，并出一张合成订单表。", "Pick designs from this run, attach an effector domain, emit protein sequences with humanised CDS and a synthesis order form."],
+  ["需要换元件就填序列（JSON：{\"KRAB\":\"…\",\"FokI_CD\":\"…\"}）", "Paste sequences here to override parts (JSON: {\"KRAB\":\"…\",\"FokI_CD\":\"…\"})"],
+  ["。burden 越小越好；命中数触到上限时 burden 是下限，标「（下限）」。", ". Lower burden is better; when the hit cap is reached the burden is a lower bound and is marked “(lower bound)”."],
+  ["⚠ N 端补了 Met（起始密码子 ATG）；若实验室构型不同请自行调整", "⚠ An N-terminal Met was added to supply the ATG start codon; adjust it if your construct differs"],
+  ["④ S4 · Fusion design（单独执行，不重跑设计）", "④ S4 · Fusion design (run separately, no re-design)"],
+  ["位点内部存在 >=6 bp 反向重复 (自二聚/发夹风险）", "internal inverted repeat of >=6 bp in the site (self-dimer / hairpin risk)"],
+  ["没有可输出的设计——位点全部落在指头库缺口上。", "No designs to emit: every site falls into a gap of the finger library."],
+  ["输出文件在临时目录，关掉服务不会自动删除。", "output files live in a temporary directory and are not deleted when the service stops."],
+  [" 条，完整清单见 sites.tsv", " rows in total; the full list is in sites.tsv"],
+  ["位点内部存在 >=6 bp 反向重复", "internal inverted repeat of >=6 bp in the site"],
+  ["· 单体型（单阵列） · 三联体 ", "· single array · triplets "],
+  ["单独作为单体在人类基因组中并不唯一", "as a monomer it is not unique in a human genome"],
+  ["· 组合型（成对） · 三联体 ", "· paired · triplets "],
+  ["· off-target 未算", "· off-target not computed"],
+  ["三指 ZFP 只读取 9 bp", "a three-finger ZFP reads only 9 bp"],
+  ["应把它作为 ZFN 配对的一半", "use it as one half of a ZFN pair"],
+  ["在human genome中", "in the human genome"],
+  ["含 CpG (甲基化风险，", "contains CpG (methylation risk, "],
+  ["候选位点（前 25 条）", "Candidate sites (first 25)"],
+  ["本文件不保证活性或特异性", "This file guarantees neither activity nor specificity"],
+  ["首位 G（GNN 偏好）", "G at position 1 (GNN preferred)"],
+  ["（理想 40%-60%）", " (ideal 40–60%)"],
+  ["）· 证据层级 Tier", ") · evidence tier "],
+  ["在人类基因组中并不唯一", "is not unique in a human genome"],
+  ["若需要基因组单拷贝结合", "for single-copy genomic binding"],
+  ["；2-mer 重复数=", "; 2-mer repeats="],
+  ["个指位三联体（均值 ", " triplet positions (mean "],
+  ["所有设计均需实验验证", "every design needs experimental validation"],
+  ["条指头：Tier1=", " fingers: Tier 1="],
+  ["理想 40%-60%", "ideal 40–60%"],
+  ["脱靶 burden=", "off-target burden="],
+  ["这段输入最缺的三联体", "Triplets this input most lacks"],
+  ["2-mer 重复数", "2-mer repeats"],
+  ["spacer 长度", "Spacer length"],
+  ["六指读 18 bp", "six fingers read 18 bp"],
+  ["单体型转录抑制因子", "monomeric repressor (ZF-KRAB)"],
+  ["单体型转录激活因子", "monomeric activator (ZF-VP64)"],
+  ["可设计·Tier1", "Designable (Tier 1)"],
+  ["本工具默认成对输出", "this tool emits pairs by default"],
+  ["核酸酶（FokI）", "Nuclease (FokI)"],
+  ["设计（按分数排序）", "Designs (ranked by score)"],
+  [" · 含 NLS", " · NLS present"],
+  ["%，Kozak ", "%, Kozak "],
+  ["个 (exact", " (exact"],
+  ["个（exact ", " (exact "],
+  ["只读取 9 bp", "reads only 9 bp"],
+  ["右单体蛋白序列（", "Right monomer protein ("],
+  ["左单体蛋白序列（", "Left monomer protein ("],
+  ["抑制（KRAB）", "Repressor (KRAB)"],
+  ["激活（VP64）", "Activator (VP64)"],
+  ["自二聚/发夹风险", "self-dimer / hairpin risk"],
+  [" bp，GC ", " bp, GC "],
+  ["spacer=", "spacer="],
+  ["全程自由能偏低", "unusually low folding free energy"],
+  ["右单体蛋白序列", "Right monomer protein"],
+  ["左单体蛋白序列", "Left monomer protein"],
+  ["无内部反向重复", "no internal inverted repeat"],
+  ["无相邻重复螺旋", "no adjacent identical helices"],
+  ["最长同碱基串=", "longest homopolymer="],
+  ["读取 9 bp", "reads only 9 bp"],
+  ["阵列蛋白序列（", "Array protein ("],
+  ["，Tier2=", ", Tier 2="],
+  [" / 终止 ", " / stop "],
+  [" · 终止 ", " · stop "],
+  ["CDS 可用", "CDS ready"],
+  ["CDS 总长", "Total CDS"],
+  ["三指 ZFP", "a three-finger ZFP"],
+  ["两个分并列，", "The two scores are reported side by side, "],
+  ["个指位三联体", " triplet positions"],
+  ["单独作为单体", "as a monomer"],
+  ["完成, 用时", "Done in"],
+  ["指头证据强度", "Finger evidence"],
+  ["最重要的限制", "Most important limitation"],
+  ["自身互补风险", "Self-complementarity risk"],
+  ["阵列蛋白序列", "Array protein"],
+  ["GC 平衡", "GC balance"],
+  ["三联体质量", "Triplet quality"],
+  ["人类基因组", "human genome"],
+  ["含 CpG", "contains CpG"],
+  ["失败 · ", "Failed · "],
+  ["完成 · ", "Done · "],
+  ["完成，用时", "Done in"],
+  ["并重新验证", "and re-validate"],
+  ["序列复杂度", "Sequence complexity"],
+  ["或加长阵列", "or lengthen the array"],
+  ["打开文件夹", "Open folder"],
+  ["指头多样性", "Finger diversity"],
+  ["条， 覆盖", " records, covering"],
+  ["甲基化风险", "methylation risk"],
+  ["融合蛋白（", "Fusion protein ("],
+  ["；来源=[", "; sources=["],
+  ["CDS（", "CDS ("],
+  ["个三联体", " triplets"],
+  ["反向重复", "inverted repeat"],
+  ["含未验证", "Contains unverified"],
+  ["并不唯一", "is not unique"],
+  ["打分权重", "scoring weights"],
+  ["来源=[", "sources=["],
+  ["融合蛋白", "Fusion protein"],
+  ["设计 #", "Design #"],
+  ["证据层级", "evidence tier"],
+  ["输出目录", "Output directory"],
+  ["（六指）", " (six-finger)"],
+  ["，命中 ", ", hits "],
+  ["，起始 ", ", start "],
+  ["不相加", "never summed"],
+  ["个设计", "designs"],
+  ["单体型", "monomer"],
+  ["只读取", "reads only"],
+  ["库覆盖", "Library coverage"],
+  ["指头库", "finger library"],
+  ["组合型", "paired"],
+  ["设计 ", "Design "],
+  ["起始 ", "start "],
+  ["首位 ", "position-1 "],
+  ["依据", "Detail"],
+  ["偏好", "preferred"],
+  ["共 ", ""],
+  ["分项", "Component"],
+  ["加权", "Weighted"],
+  ["取前", "Top"],
+  ["命中", "hits"],
+  ["均值", "mean"],
+  ["存在", "present"],
+  ["权重", "Weight"],
+  ["）：", "): "],
+  ["。", ". "],
+  ["中", ""],
+  ["在", ""],
+  ["秒", " s"],
+  ["（", " ("],
+  ["）", ")"],
+  ["，", ", "],
+  ["：", ": "],
+  ["；", "; "],
+];
 const I18N_PHASE = {
   "扫描候选位点":"Scanning candidate sites",
   "全基因组重复过滤":"Genome-wide repeat filtering",
@@ -1119,11 +1363,12 @@ function _tr(s){
   if (!k) return s;
   if (I18N_EN[k]) return I18N_EN[k];
   let out = k;
+  for (const [zh, en] of I18N_SUB){ if (out.indexOf(zh) !== -1) out = out.split(zh).join(en); }
   for (const [zh, en] of Object.entries(I18N_PHASE)) out = out.split(zh).join(en);
   out = out.replace(/（已用\s*(\d+)\s*分\s*(\d+)\s*秒）/g, " (elapsed $1 min $2 s)");
   out = out.replace(/（已用\s*(\d+)\s*秒）/g, " (elapsed $1 s)");
   out = out.replace(/^完成，用时\s*([\d.]+)\s*秒$/, "Done in $1 s");
-  return out;
+  return out.replace(/\s{2,}/g, " ");
 }
 
 function applyLang(lang){
@@ -1132,7 +1377,7 @@ function applyLang(lang){
   document.documentElement.lang = LANG === "en" ? "en" : "zh-CN";
   document.title = LANG === "en" ? "ZFN Design Workbench" : "ZFN 设计工作台";
   const btn = document.getElementById("lang");
-  if (btn) btn.textContent = LANG === "en" ? "中文" : "EN";
+  if (btn) btn.textContent = LANG === "en" ? "ZH" : "EN";
   const dl = document.getElementById("doclink");
   if (dl) dl.href = "/manual?lang=" + LANG;
   const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
@@ -1179,7 +1424,7 @@ function applyLang(lang){
     applyLang(next);
   };
   const obs = new MutationObserver(() => {
-    if (__langBusy || LANG !== "en") return;
+    if (LANG !== "en") return;
     clearTimeout(window.__langT);
     window.__langT = setTimeout(() => { if (LANG === "en") applyLang("en"); }, 60);
   });
@@ -1811,6 +2056,7 @@ fetch("/api/info").then(r => r.json()).then(async info => {
     打分权重 <span class="mono">8 分项</span>`;
   const sel = $("#arch");
   sel.innerHTML = (info.architectures||[]).map(a => `<option value="${esc(a.key)}">${esc(a.label)}</option>`).join("");
+  if (LANG === "en") applyLang("en");
   if ([...sel.options].some(o => o.value === "paired_nuclease")) sel.value = "paired_nuclease";
   sel.onchange = syncArch;
   // URL 参数：?fingers=6&spacers=6 或 5-7&arch=single_activator（也用于截图与自检）

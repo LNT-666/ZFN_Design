@@ -195,7 +195,7 @@ def render_page(lang: str | None = None) -> str:
 </div>
 <div class="wrap">
 {body}
-<div class="foot">zfn_design 0.8.0 · {html.escape(TITLES[lang])}</div>
+<div class="foot">zfn_design 0.7.0 · {html.escape(TITLES[lang])}</div>
 </div>
 </body>
 </html>
